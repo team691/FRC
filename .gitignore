@@ -1,6 +1,26 @@
+#This is the ingore file and makes sure only plain-text #
+#source files are commited                              #
+
+# Compiled Java Files #
 *.class
 
-# Package Files #
+# Compiled CRio Files #
+image.suite
+image.suite.metadata
+image.sym
+
+# Java Package Files #
 *.jar
 *.war
 *.ear
+
+# Netbeans Specific #
+build/
+j2meclasses/
+private.xml
+
+# Cat pictures that don't belong #
+*.jpg
+*.png
+*.gif
+
