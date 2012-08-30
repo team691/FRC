@@ -3,7 +3,7 @@
 
 This is the program used on our 2011 robot "Master Chief" or "The Green Robot." It is writen in java and based on the FRC simple robot template.
 
-WARNING: this was our first year using java as a programming language, and as such the code may appear sloppy and hacked together in places.
+This was our first year using Java as a programming language, and as such the code may appear sloppy in some places.
 
 Details on the Program
 ======================
@@ -13,6 +13,8 @@ All of the control systems and electronics are in the file src/RobotDependantCod
 Robot Main delegates complex tasks to other files and handles all of the control input.
 
 Requires two joysticks in order to work, and a gamepad can optionally be used to control the forklift and the camera.
+
+As of 8/30/2012, the program has approximatly 2250 lines of code, including comments, white space, and each curly brace is on a new line.
 
 Details on the Robot
 ====================

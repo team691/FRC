@@ -20,7 +20,5 @@ j2meclasses/
 private.xml
 
 # Cat pictures that don't belong #
-*.jpg
-*.png
-*.gif
+Kitty-Cat.jpg
 

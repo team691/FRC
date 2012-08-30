@@ -1,0 +1,63 @@
+// -*-c++-*- 
+/** 
+ * @file  ut_sock_bin.cc
+ *
+ * $Id: $
+ *
+ * @author  Rich Petras
+ * @date    March 15, 2010
+ *
+ * Unit test for server side of the SuperSock class
+ *
+ */ 
+
+
+#include "super_sock.h"
+#include "KPacket.h"
+
+using namespace std;
+using namespace Team691;
+
+
+int main(int argc, char const ** argv)
+{
+  char * port = (char *)"20000";
+  char * inet_addr = (char *)"0.0.0.0";
+
+  cout << "argc = " << argc << endl;
+
+  SuperSock s;
+  if(argc >= 2)
+    port = (char *)argv[1];
+
+  /*
+   * Init data
+   */
+
+  if(s.init(port, inet_addr))
+    {
+      cout << "Socket initialized" << endl;
+    }
+  else
+    {
+      return -1;
+    }
+
+      int len = 0;
+      //      unsigned char data[1000];
+      KPacketOut data;
+
+      for (int i = 0; i <1000000; i++)
+      {
+//           sprintf((char *)data.head, "Head", i);
+          
+          cout << data.head << " " << ++(data.frame_count) << endl;
+
+          s.write_timeout((unsigned char*)&data, sizeof(data), 10000);
+          usleep(200);
+      }
+
+      
+  return 0;
+
+}

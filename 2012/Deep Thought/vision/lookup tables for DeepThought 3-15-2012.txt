@@ -1,0 +1,34 @@
+{
+    //TOP //no lower value avalible
+    {   
+        //{ distance_measured, corosponding_RPM }
+    
+        {90, 1760},
+        {125, 1920},
+        {177, 2250},
+        {230, 2470},
+        {270, 3100},
+        {-1,  -1}
+    },
+    
+    //LEFT //incomplete table
+    {
+        {72,  1170},
+        {112, 1500},
+        {-1, -1}
+    },
+    
+    //BOTTOM //incomplete table, uncertain about accuracy of these values
+    {
+        {72, 950},
+        {112, 1300},
+        {-1, -1}
+    },
+    
+    //RIGHT //copy from left
+    {
+        {72, 1170},
+        {112, 1500},
+        {-1, -1}
+    }
+};

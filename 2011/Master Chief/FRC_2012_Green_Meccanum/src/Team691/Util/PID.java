@@ -198,41 +198,4 @@ public class PID
                 "output: "+output+"\n"+
                 "------------------------------";
     }
-
-
-    
-
-/*
-    //------------------HERE DOWN FOR TESTING ONLY------------------------------
-    //used for testing only
-    //uncomment here to re enable simulation testing
-
-    public static void main(String[] args)
-    {
-        PID cake = new PID();
-        double test = 0;
-        boolean isTesting = true;
-        int times = 0;
-        int cycles = 0;
-        cake.setDebugMode(true);
-        while (isTesting)
-        {
-            double output = cake.calc(62000, test);
-            if (output > 1)
-                test += 97.0*1440*(cake.dTime*0.001)*1;
-            else if(output < -1)
-                test += 97.0*1440*(cake.dTime*0.001)*-1;
-            else
-                test += 97.0*1440*(cake.dTime*0.001)*output;
-
-            if ( Math.abs(62000-test) < 100)
-                times++;
-            if (times > 100)
-                isTesting = false;
-            cycles++;
-        }
-
-        System.out.println("done. cycles: "+cycles);
-    }/***/
-
 } // end of class; end of file
