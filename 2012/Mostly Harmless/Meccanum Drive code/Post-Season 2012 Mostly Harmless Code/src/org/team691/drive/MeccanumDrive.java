@@ -1,9 +1,7 @@
-
 /*
  * TEAM     : 691 Hart Burn
  * AUTHOR(S): Akira "Ninja" H., Casey G., Gerard "B-Bo" B.,
- *            Bryan "Brandon" S. (Don't call him Brandon), Robert "Sir Sayer" G.,
- *            Shoma H.
+ *            Bryan "Brandon" S. (Don't call him Brandon)
  * SEASON   : 2011
  * CONTACT  : mheid2011@gmail.com
  */
@@ -15,7 +13,7 @@ import org.team691.util.Mathf;
 import org.team691.util.Time;
 
 /**
- * Controls the wheel movement for a standard, 4-wheeled, meccanum drive setup.
+ * Controls the wheel movement for a standard, 4-wheeled, Meccanum drive setup.
  * @author Akira, Gerard
  */
 public class MeccanumDrive implements Drive
@@ -60,6 +58,8 @@ public class MeccanumDrive implements Drive
     /**
      * Constructor for the MeccanumDrive object. This method is only used for
      * backwards compatability.
+     * 
+     * @param cRIOSlot      The cRIO slot the wheels are connected to.
      * @param channelNum The array of channel numbers for the speed controllers
      * ([0] is Front Right Wheel, [1] is Front Left Wheel, [2] is Back Left
      * Wheel, [3] is Back Right Wheel).
@@ -68,25 +68,26 @@ public class MeccanumDrive implements Drive
      * @param BREnc The Back Right Wheel encoder object.
      * @param BLEnc The Back Left Wheel encoder object.
      */
-    public MeccanumDrive(int channelNum[], Encoder FREnc, Encoder FLEnc, Encoder BREnc,
-                         Encoder BLEnc)
-    {
-        wheels[0] = new MeccanumWheel( channelNum[0], FREnc, 1 );
-        wheels[1] = new MeccanumWheel( channelNum[1], FLEnc, 2 );
-        wheels[2] = new MeccanumWheel( channelNum[2], BLEnc, 3 );
-        wheels[3] = new MeccanumWheel( channelNum[3], BREnc, 4 );
+    public MeccanumDrive(int cRIOSlot, int channelNum[], Encoder FREnc, Encoder FLEnc, Encoder BREnc,
+                         Encoder BLEnc){
+        wheels[0] = new MeccanumWheel(cRIOSlot, channelNum[0], FREnc, MeccanumWheel.FR_WHEEL);
+        wheels[1] = new MeccanumWheel(cRIOSlot, channelNum[1], FLEnc, MeccanumWheel.FL_WHEEL);
+        wheels[2] = new MeccanumWheel(cRIOSlot, channelNum[2], BLEnc, MeccanumWheel.BL_WHEEL);
+        wheels[3] = new MeccanumWheel(cRIOSlot, channelNum[3], BREnc, MeccanumWheel.BR_WHEEL);
     }
 
     /**
-     * Updates all four wheel speeds.
-     * @param forward How much the user wants to drive forward.
-     * @param right How much the user wants to strafe right.
-     * @param turn How much the user wants to turn in place.
+     * Updates all four wheel speeds. The left and right joysticks are used like
+     * the Halo driving style (left joystick controls forward and strafing, right
+     * joystick controls turning).
+     * @param forward   Value from the left joystick's y-axis.
+     * @param strafe    Value from the left joystick's x-axis.
+     * @param turn      Value from the right joystick's x-axis.
      */
-    public void update(double forward, double right, double turn)
+    public void update(double forward, double strafe, double turn)
     {
         // uses fewer processes if  all values are 0
-        if ( (forward == 0) && (right == 0) && (turn == 0) )
+        if ( (forward == 0) && (strafe == 0) && (turn == 0) )
         {
             for(int count = 0; count < wheels.length; count++)
             {
@@ -97,21 +98,20 @@ public class MeccanumDrive implements Drive
         }
         else // normal operation
         {
-            //turn += (right * turnOffset);
-            // send the Joystick data to the wheels
             double max = -1;
 
             for(int count = 0; count < wheels.length; count++)
             {
-                // update calculates the magnitude that this wheel should move at
-                // , but does not actually set the motor - gives us a chance to
+                // update() calculates the magnitude that this wheel should move at,
+                // but does not actually set the motor - gives us a chance to
                 // syncronize the wheel's speeds
-                magnitudes[count] = wheels[count].update( forward, right, turn );
+                magnitudes[count] = wheels[count].update( forward, strafe, turn );
 
-                double temp = Mathf.abs( magnitudes[count] );
+                double temp = Math.abs( magnitudes[count] );
 
-                if ( temp > max )
+                if ( temp > max ){
                     max = temp;
+                }
             }
 
             // now we actually tell the motors how to move
@@ -119,8 +119,7 @@ public class MeccanumDrive implements Drive
             {
                 // We can't set the motor's power to more than 100%, scale everything
                 // down equaly
-                if ( max > 1 )
-                {
+                if ( max > 1 ){
                     magnitudes[count] /= max;
                 }
 
@@ -155,14 +154,16 @@ public class MeccanumDrive implements Drive
 
     public void enable()
     {
-        for( int count = 0; count < wheels.length; count++)
+        for( int count = 0; count < wheels.length; count++){
             wheels[count].enable();
+        }
     }
 
     public void disable() 
     {
-        for( int count = 0; count < wheels.length; count++)
+        for( int count = 0; count < wheels.length; count++){
             wheels[count].disable();
+        }
     }
 
     /**
@@ -181,6 +182,4 @@ public class MeccanumDrive implements Drive
                  + wheels[3].toString() );
     }
 }
-
-
 //FIRST FRC team 691 2012 competition code

@@ -43,7 +43,7 @@ public class RPMMotor
 
     /**
      * Updates the motors based on PID if there has been no change.
-     * if the robot is disabled or updateSpeedVars() has been called, get out
+     * If the robot is disabled or updateSpeedVars() has been called, get out
      * else calculate the next PID values to be sent to the motors and send them
      */
     public void update()
@@ -61,14 +61,13 @@ public class RPMMotor
 
     /**
      * Update everything with new values if enough time has passed.
-     * if enough time has passed, update the change in time, the encoder count, 
+     * If enough time has passed, update the change in time, the encoder count, 
      * the encoder speed, the rpm, and the last time and count values
      * @return that the values have been updated or not
      */
     public boolean updateSpeedVars()
     {
-        if ( Time.time() - UPDATE_INTERVAL < lastTime )
-            return false;
+        if ( Time.time() - UPDATE_INTERVAL < lastTime ){return false;}
 
         deltaTime    = Time.time() - lastTime;
         deltaCount   = enc.get() - lastCount;
@@ -81,7 +80,7 @@ public class RPMMotor
 
     /**
      * disables the drive system, then sets the motor value to a defined value.
-     * @param value 
+     * @param value The value to set the motor to.
      */
     public void overWritePID(double value)
     {
@@ -90,8 +89,8 @@ public class RPMMotor
     }
 
     /**
-     * increases the motor's power value by the parameter value.
-     * @param value 
+     * Increases the motor's power value by the parameter value.
+     * @param value The value to add to the motor's current value.
      */
     public void adjustMotor(double value)
     {

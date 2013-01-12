@@ -107,13 +107,6 @@ public class Mathf
     public static double abs(final double value)
     {
         return Math.abs( value );
-
-        /*
-         * Double.longBitsToDouble
-         *   (              //bit shift removes the sign bit then
-         *       (Double.doubleToLongBits(value)<<1)   >>>1
-         *   );             //bit shift returns to normal sans negitive sign.
-         */
     }
 
     /**
@@ -157,8 +150,8 @@ public class Mathf
         }
     }    
     /**
-     * maps a value from one range into another range. 
-     * for example, if you want to move a Joystick value (which is from -1 to 1)
+     * Maps a value from one range into another range. 
+     * For example, if you want to move a Joystick value (which is from -1 to 1)
      * into a range of 0 to 1, then you would use
      * <code>map( joyValue, -1, 1, 0, 1)</code>
      * @param value the value to map. this should be inside [low1, high1]
