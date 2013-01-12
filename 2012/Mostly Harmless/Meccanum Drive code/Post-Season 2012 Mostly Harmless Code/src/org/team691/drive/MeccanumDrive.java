@@ -147,11 +147,6 @@ public class MeccanumDrive implements Drive
         update( 0, 0, 0 );
     }
 
-    public void lockDown()
-    {
-        stop();
-    }
-
     public void enable()
     {
         for( int count = 0; count < wheels.length; count++){
