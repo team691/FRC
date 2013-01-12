@@ -120,7 +120,7 @@ public class TargetingComputerConnection extends Thread
     protected void readUnlock()
     {
         isReading     = false;
-        readBlockTime = Time.time() + 999999999999999;
+        readBlockTime = Time.time() + 999999999;
     }
 
     public boolean hasBlocked()
