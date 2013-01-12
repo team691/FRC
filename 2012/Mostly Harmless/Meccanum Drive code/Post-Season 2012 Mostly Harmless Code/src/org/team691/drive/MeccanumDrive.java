@@ -10,17 +10,23 @@
 
 package org.team691.drive;
 
-import edu.Objects;
 import edu.wpi.first.wpilibj.Encoder;
 import org.team691.util.Mathf;
 import org.team691.util.Time;
 
 /**
- * Controls the wheel movement for a standard meccanum drive setup.
- * @author Akira
+ * Controls the wheel movement for a standard, 4-wheeled, meccanum drive setup.
+ * @author Akira, Gerard
  */
 public class MeccanumDrive implements Drive
 {
+    /**
+     * Array of the wheels for the Meccanum Drive.
+     * <li>[0] = Front Right Motor
+     * <li>[1] = Front Left Motor
+     * <li>[2] = Back Left Motor
+     * <li>[3] = Back Right Motor
+     */
     protected MeccanumWheel[] wheels               = new MeccanumWheel[4];
     protected double[] magnitudes                  = new double[wheels.length];
     protected double[] lastMagnitudes              = new double[wheels.length];
@@ -30,15 +36,14 @@ public class MeccanumDrive implements Drive
     protected double turnOffset                    = 0;
 
     
-    public MeccanumDrive()
-    {
-        this( Objects.meccanumMotors );
-    }
+    public MeccanumDrive(){}
+    
     public MeccanumDrive( double turnFromStrafeOffset )
     {
         this();
         this.turnOffset = turnFromStrafeOffset;
     }
+    
     /**
      * Constructor for the MeccanumDrive object.
      * @param velMtrsIn A length 4 array of Velocity motors where [0] is the FR

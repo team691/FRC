@@ -10,8 +10,8 @@
 package edu;
 
 import edu.io.AutoTarget;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SimpleRobot;
+import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import org.team691.drive.Drive;
 import org.team691.util.EnhancedJoystick;
@@ -51,11 +51,9 @@ public class RobotMain extends SimpleRobot
     private boolean lastOffsetHeld                   = false;
     
     public boolean lockSwerve                        = false;
-    public boolean acceptTargetingData               = true;
+    public boolean acceptTargetingData               = false;
     
-    public Joystick rightJoy                         = Objects.rightJoy;
-    public Joystick leftJoy                          = Objects.leftJoy;
-    public EnhancedJoystick shooterJoy               = Objects.shooterJoy;
+    public EnhancedJoystick leftJoy                  = Objects.leftJoy;
     
     public Drive drive                               = Objects.driveSystem;
     public RampArticulate rampArticulate             = Objects.armSystem;
@@ -80,6 +78,7 @@ public class RobotMain extends SimpleRobot
     public void robotInit()
     {
         zeroAll();
+        Watchdog.getInstance().setEnabled(false);
         log("robotInit()");
         if(  AXIS_CAMERA_IS_ATTACHED  )
         {
@@ -207,19 +206,14 @@ public class RobotMain extends SimpleRobot
             // get joystick axis input
             Y       = Util.joystickDeadZone( -leftJoy.getY() );
             X       = Util.joystickDeadZone( leftJoy.getX() );
-            T       = Util.joystickDeadZone( rightJoy.getX() );
-            turtRot = Util.joystickDeadZone( -shooterJoy.getZ() ); // twist
+            turtRot = Util.joystickDeadZone( -leftJoy.getZ() ); // twist
             
             //Now mathematicly modify the numbers to change their responsiveness.
-            //Y       = Util.oneHalfXSquared(Y);
-            //X       = Util.oneHalfXSquared(X);
-            //X = Mathf.map(X, -1, 1, -0.8, 0.8);
-            //Y = Mathf.map(Y, -1, 1, -0.8, 0.8);
             Y = Util.cubeAxis( Y );
             X = Util.cubeAxis( X );
             turtRot = Util.oneHalfXSquared( turtRot );
             
-            handleTurretAutoTargeting();
+//            handleTurretAutoTargeting();
 
             // override kinect input if the driver wants to turn the turret manually
             if ( turtRot != 0 )
@@ -231,7 +225,7 @@ public class RobotMain extends SimpleRobot
             
             // pass command flow to the drive system, so that we can move.
             if ( lockSwerve )
-                drive.lockDown();
+                drive.stop();
             else
                 drive.update( Y, X, T );
 
@@ -265,18 +259,8 @@ public class RobotMain extends SimpleRobot
      */
     protected void handleUniversalInput()
     {
-        // select the auto-aim target -- absolute hold/set on shooter hat switch
-        if ( shooterJoy.getRawButton( EnhancedJoystick.BUTTON_DU ) )
-            autoTarget.cycleTarget( AutoTarget.TOP );
-        else if ( shooterJoy.getRawButton( EnhancedJoystick.BUTTON_DL ) )
-            autoTarget.cycleTarget( AutoTarget.LEFT );
-        else if ( shooterJoy.getRawButton( EnhancedJoystick.BUTTON_DD ) )
-            autoTarget.cycleTarget( AutoTarget.BOTTOM );
-        else if ( shooterJoy.getRawButton( EnhancedJoystick.BUTTON_DR ) )
-            autoTarget.cycleTarget( AutoTarget.RIGHT );
-        
         // handle launching balls -- hold on SHOOTER 1
-        if ( shooterJoy.getRawButton( 1 ) )
+        if ( leftJoy.getRawButton( 1 ) )
         {
             turret.spinUpShooter();
             turret.shootWithChecks();
@@ -289,37 +273,36 @@ public class RobotMain extends SimpleRobot
         }
 
         // adjust rpm offset -- toggle on SHOOTER 10, -9
-        if ( shooterJoy.getButtons() != 0 )
-        {
-            if ( !lastOffsetHeld )
-            {
-                if ( shooterJoy.getRawButton( 10 ) )
-                {
-                    rpmOffset      += 25;
-                    lastOffsetHeld = true;
-                }
-                else if ( shooterJoy.getRawButton( 9 ) )
-                {
-                    rpmOffset      -= 25;
-                    lastOffsetHeld = true;
-                }
-            }
-        }
-        else
-            lastOffsetHeld = false;
+//        if ( leftJoy.getButtons() != 0 )
+//        {
+//            if ( !lastOffsetHeld )
+//            {
+//                if ( leftJoy.getRawButton( 10 ) )
+//                {
+//                    rpmOffset      += 25;
+//                    lastOffsetHeld = true;
+//                }
+//                else if ( leftJoy.getRawButton( 9 ) )
+//                {
+//                    rpmOffset      -= 25;
+//                    lastOffsetHeld = true;
+//                }
+//            }
+//        }
+//        else
+//            lastOffsetHeld = false;
 
-        // move the ramp arm -- hold on RIGHT 3, -4 and SHOOTER 8, -7
-        if ( leftJoy.getRawButton( 3 ) || shooterJoy.getRawButton( 7 ) )
+        if ( leftJoy.getRawButton( 5 ) || leftJoy.getRawButton( 6 ) )
             rampArticulate.bringDown();
-        else if ( leftJoy.getRawButton( 2 ) || shooterJoy.getRawButton( 8 ) )
+        else if ( leftJoy.getRawButton( 3 ) || leftJoy.getRawButton( 4 ) )
             rampArticulate.bringUp();
         else
             rampArticulate.turnOff();
 
         // handle intakeAndConveyor and conveyor -- hold on SHOOTER 3, -5
-        if ( rightJoy.getRawButton( 3 ) || shooterJoy.getRawButton( 3 ) )
+        if ( leftJoy.getRawButton( EnhancedJoystick.BUTTON_DU ) )
             intakeAndConveyor.turnOn( true );
-        else if ( rightJoy.getRawButton( 2 ) || shooterJoy.getRawButton( 5 ) )
+        else if ( leftJoy.getRawButton( EnhancedJoystick.BUTTON_DD ) )
             intakeAndConveyor.turnReverse( true );
         else
             intakeAndConveyor.turnOff( false );
@@ -331,17 +314,10 @@ public class RobotMain extends SimpleRobot
             X *= 0.333;
             T *= 0.333;
         }
-
-        // Sets all wheels inward to "Lock down" and prevent movement
-        // hold on RIGHT 1 and SHOOTER 11
-        else if ( rightJoy.getRawButton( 1 ) || shooterJoy.getRawButton( 11 ) )
-            lockSwerve = true;
-        else
-            lockSwerve = false;
         
         //check the throttle to see if we're supposed to accept targeting data
         //  or not.
-        acceptTargetingData = shooterJoy.axisToButton(4, false, true);
+        acceptTargetingData = leftJoy.axisToButton(4, false, true);
         if( !acceptTargetingData )
         {
             rpmOffset = DEFAULT_RPM_OFFSET;
@@ -349,20 +325,20 @@ public class RobotMain extends SimpleRobot
         }
         
         //reverse the conveyor and feeder if a ball gets stuck.
-        if ( shooterJoy.getRawButton( 9 ) && shooterJoy.getRawButton( 10 ) )
+        if ( leftJoy.getRawButton( 12 ) )
         {
             turret.conveyorDown();
             turret.feederReverse();
         }
         
         //temporary dump setting
-        if( shooterJoy.getRawButton( 4 ) )
-            turret.setSpeedObjective( DUMP_RPM );
-        else if( shooterJoy.getRawButton( 6 ) )
-            turret.setSpeedObjective( KEY_RPM );
-        
-        if( shooterJoy.getRawButton(2) )
-            turret.feederReverse();
+//        if( shooterJoy.getRawButton( 4 ) )
+//            turret.setSpeedObjective( DUMP_RPM );
+//        else if( shooterJoy.getRawButton( 6 ) )
+//            turret.setSpeedObjective( KEY_RPM );
+//        
+//        if( shooterJoy.getRawButton(2) )
+//            turret.feederReverse();
         
     } // end handle universal controls
 
@@ -407,18 +383,6 @@ public class RobotMain extends SimpleRobot
                  + "\n current RPM offset       : " + rpmOffset );
             log("************************************************************");
             log("************************************************************");
-            /*
-            log( "FR:\n" + Objects.frVelocityController.toString()
-                 + "FL:\n" + Objects.flVelocityController.toString()
-                 + "BL:\n" + Objects.blVelocityController.toString()
-                 + "BR:\n" + Objects.brVelocityController.toString() );
-            */
-            //log( "FR angle: " + Objects.frSteeringEncoder.get().get() );
-            //log( "FL angle: " + Objects.flSteeringEncoder.get().get() );
-            //log( "BL angle: " + Objects.blSteeringEncoder.get().get() );
-            //log( "BR angle: " + Objects.brSteeringEncoder.get().get() );
-
-            // log( "target angle : " + ((SwerveDrive)drive).target.get() );
             log( "Y, X, T: " + Y + ", " + X + ", " + T );
 
             newData = 0;
