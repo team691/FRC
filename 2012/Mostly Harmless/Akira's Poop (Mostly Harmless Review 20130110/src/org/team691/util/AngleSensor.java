@@ -120,5 +120,4 @@ public class AngleSensor
 
         /* mod.getAverageVoltage(channel); */
     }
-}
-//FIRST FRC team 691 2012 competition code
+}//FIRST FRC team 691 2012 competition code

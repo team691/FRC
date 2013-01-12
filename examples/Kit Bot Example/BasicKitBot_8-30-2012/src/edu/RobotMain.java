@@ -49,8 +49,5 @@ public class RobotMain extends SimpleRobot
         
         rightWheel.set( Y - X );
         leftWheel.set( Y + X );
-        
-        System.out.println( "Hello World" );
-        
     }
 }
