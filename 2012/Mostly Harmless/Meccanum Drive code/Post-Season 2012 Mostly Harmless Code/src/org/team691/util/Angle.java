@@ -60,7 +60,7 @@ public class Angle
 
     public Angle add(double amount)
     {
-        return new Angle( this.get() + amount );
+        return new Angle( valueDegs + amount );
     }
 
     public Angle subtract(Angle other)
@@ -70,7 +70,7 @@ public class Angle
 
     public Angle subtract(double amount)
     {
-        return new Angle( this.get() - amount );
+        return new Angle( valueDegs - amount );
     }
 
     public Angle multiply(Angle other)
@@ -80,7 +80,7 @@ public class Angle
 
     public Angle multiply(double amount)
     {
-        return new Angle( this.get() * amount );
+        return new Angle( valueDegs * amount );
     }
 
     public Angle divide(Angle other)
@@ -90,7 +90,7 @@ public class Angle
 
     public Angle divide(double amount)
     {
-        return new Angle( this.get() / amount );
+        return new Angle( valueDegs / amount );
     }
 
     public Angle modulus(Angle other)
@@ -100,36 +100,36 @@ public class Angle
 
     public Angle modulus(double amount)
     {
-        return new Angle( this.get() % amount );
+        return new Angle( valueDegs % amount );
     }
 
     public Angle negitive()
     {
-        return new Angle( -this.get() );
+        return new Angle( -valueDegs );
     }
 
     public Angle plus180()
     {
-        return new Angle( this.get() + 180 );
+        return new Angle( valueDegs + 180 );
     }
 
     public Angle minus180()
     {
-        return new Angle( this.get() - 180 );
+        return new Angle( valueDegs - 180 );
     }
 
     protected double distanceTo(double other)
     {
-        if ( Mathf.approximately( this.get(), other, ERROR ) )
+        if ( Mathf.approximately( valueDegs, other, ERROR ) )
             return 0;
 
-        double dist = other - this.get();
+        double dist = other - valueDegs;
 
         if ( Mathf.abs( dist ) <= 180 )
             return dist;
 
         dist = 360 - Mathf.abs( dist );
-        return dist * -1 * Mathf.sign( other - this.get() );
+        return dist * -1 * Mathf.sign( other - valueDegs );
     }
 
     public double distanceTo(Angle other)
@@ -206,22 +206,22 @@ public class Angle
 
     public double sin()
     {
-        return Mathf.sin( Mathf.DEG2RAD * ( this.get() ) );
+        return Mathf.sin( Mathf.DEG2RAD * ( valueDegs ) );
     }
 
     public double cos()
     {
-        return Mathf.cos( Mathf.DEG2RAD * ( this.get() ) );
+        return Mathf.cos( Mathf.DEG2RAD * ( valueDegs ) );
     }
 
     public double tan()
     {
-        return Mathf.tan( Mathf.DEG2RAD * ( this.get() ) );
+        return Mathf.tan( Mathf.DEG2RAD * ( valueDegs ) );
     }
 
     public Angle clone()
     {
-        return new Angle( this.get() );
+        return new Angle( valueDegs );
     }
 
     protected void reduceAngle()
@@ -240,7 +240,7 @@ public class Angle
 
     public String toString()
     {
-        return Double.toString( this.get() );
+        return Double.toString( valueDegs );
     }
 
     public Angle lerp(Angle b, double where)

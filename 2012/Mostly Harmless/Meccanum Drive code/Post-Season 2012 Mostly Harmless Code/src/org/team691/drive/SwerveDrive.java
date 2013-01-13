@@ -22,10 +22,10 @@ public class SwerveDrive implements Drive
     public static final Angle DEFAULT_TURN_BR  = new Angle( -45 );
     public static final Angle DEFAULT_TURN_BL  = new Angle( 45 );
     public static final Angle DEFAULT_POSITION = new Angle( 0 );
-    protected AngleMotor fr                    = Objects.frSteeringController;
-    protected AngleMotor fl                    = Objects.flSteeringController;
-    protected AngleMotor br                    = Objects.brSteeringController;
-    protected AngleMotor bl                    = Objects.blSteeringController;
+    protected AngleMotor fr;
+    protected AngleMotor fl;
+    protected AngleMotor br;
+    protected AngleMotor bl;
     protected SpeedController rV               = Objects.rDrive;
     protected SpeedController lV               = Objects.lDrive;
     public Angle target                        = DEFAULT_POSITION;

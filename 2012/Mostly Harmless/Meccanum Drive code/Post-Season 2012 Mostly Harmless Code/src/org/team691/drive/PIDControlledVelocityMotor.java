@@ -79,10 +79,12 @@ public class PIDControlledVelocityMotor
         this.encode = encIn;
         
         //Victors and Jaguars react slightly diffrently to input
-        if( this.mtr.getClass() == Victor.class )
+        if( this.mtr.getClass() == Victor.class ){
             this.isVictor = true;
-        else
+        }
+        else{
             this.isVictor = true; //false
+        }
 
         resetEncoder();
     }

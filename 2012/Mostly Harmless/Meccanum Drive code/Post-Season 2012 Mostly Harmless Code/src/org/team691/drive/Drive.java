@@ -30,8 +30,6 @@ public interface Drive
 
     public void enable();
 
-    public void lockDown();
-
 }
 
 //FIRST FRC team 691 2012 competition code

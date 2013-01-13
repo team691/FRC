@@ -47,12 +47,12 @@ public class EnhancedJoystick implements IInputOutput // the implements, it does
     // --------------------------END DECLARE CONSTANTS---------------------------
 
     /**
-     * Used internally to receive input from the devise.
+     * Used internally to receive input from the device.
      */
     protected DriverStation ds;
 
     /**
-     * The usb port that the devise is attached to.
+     * The USB port that the device is attached to.
      */
     protected int portNum;
 
@@ -66,8 +66,8 @@ public class EnhancedJoystick implements IInputOutput // the implements, it does
     // --------------------------END DECLARE VARIABLES---------------------------
 
     /**
-     * Constructs an object that allows access to an HID input devise on a usb port.
-     * @param portNumIn What usb port the devise is plugged into.
+     * Constructs an object that allows access to an HID input device on a USB port.
+     * @param portNumIn What USB port the device is plugged into.
      */
     public EnhancedJoystick(final int portNumIn)
     {
@@ -76,7 +76,7 @@ public class EnhancedJoystick implements IInputOutput // the implements, it does
     }
 
     /**
-     * The raw value fed from the usb port is returned. When this number is read
+     * The raw value fed from the USB port is returned. When this number is read
      * in binary, the first bit represents the state of button 1, the second bit
      * represents the state of button 2, and so on. Do not use if unfamiliar with
      * bit shift operators.
